@@ -5,8 +5,8 @@ stages:
     deps:
     - path: data/raw/Amazon_Fashion.jsonl.gz
       hash: md5
-      md5: 49b7abcaa210692f9a03d6082302bbc9
-      size: 295578253
+      md5: 7932073c8aca97d5e4c6f5446f401dc5
+      size: 95357493
     - path: process_data.py
       hash: md5
       md5: b09021443c4819889ac1d13f827bf1f6
@@ -18,65 +18,65 @@ stages:
     outs:
     - path: data/processed/test.csv
       hash: md5
-      md5: 309e187007b871f74ace0471eaf644f1
-      size: 553533
+      md5: 1a0bd2ff4ede3eccfa4a0f8b047f372f
+      size: 627941
     - path: data/processed/train.csv
       hash: md5
-      md5: 8ae947a28d28236ed53b238b6d971f24
-      size: 2252366
+      md5: bdba9eee9e66526be08fe1000eb9311f
+      size: 2575800
   create_features:
     cmd: python create_features.py
     deps:
     - path: create_features.py
       hash: md5
-      md5: 94dc319c18b14246317d43f8050a4126
-      size: 1639
+      md5: 47ffdd3f5ec709d355c2af4aaf3413a8
+      size: 1148
     - path: data/processed/test.csv
       hash: md5
-      md5: 309e187007b871f74ace0471eaf644f1
-      size: 553533
+      md5: 1a0bd2ff4ede3eccfa4a0f8b047f372f
+      size: 627941
     - path: data/processed/train.csv
       hash: md5
-      md5: 8ae947a28d28236ed53b238b6d971f24
-      size: 2252366
+      md5: bdba9eee9e66526be08fe1000eb9311f
+      size: 2575800
     params:
       params.yaml:
         create_features.max_features: 20000
     outs:
     - path: data/features/test_features.npz
       hash: md5
-      md5: a7db967f96b5cb845d1daf5bbc0b6808
-      size: 73612
+      md5: c28fba86a6b5de316ea8321fd7f29296
+      size: 86589
     - path: data/features/test_target.csv
       hash: md5
-      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
+      md5: 3167df1d9fb1e1f9360840b2a778ca1a
       size: 8007
     - path: data/features/train_features.npz
       hash: md5
-      md5: 42f6b9a9e6251cf5992712d8a8e73be3
-      size: 301853
+      md5: 0078a6dcc893f291ca43e363069aa91e
+      size: 356599
     - path: data/features/train_target.csv
       hash: md5
-      md5: d6ec47496a4c52a700c50f0fb65d8119
+      md5: c80187d9cfcf1be488007ee51ebf03ab
       size: 32007
   train_model:
     cmd: python train_model.py
     deps:
     - path: data/features/test_features.npz
       hash: md5
-      md5: a7db967f96b5cb845d1daf5bbc0b6808
-      size: 73612
+      md5: c28fba86a6b5de316ea8321fd7f29296
+      size: 86589
     - path: data/features/test_target.csv
       hash: md5
-      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
+      md5: 3167df1d9fb1e1f9360840b2a778ca1a
       size: 8007
     - path: data/features/train_features.npz
       hash: md5
-      md5: 42f6b9a9e6251cf5992712d8a8e73be3
-      size: 301853
+      md5: 0078a6dcc893f291ca43e363069aa91e
+      size: 356599
     - path: data/features/train_target.csv
       hash: md5
-      md5: d6ec47496a4c52a700c50f0fb65d8119
+      md5: c80187d9cfcf1be488007ee51ebf03ab
       size: 32007
     - path: train_model.py
       hash: md5
@@ -88,9 +88,21 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 74bac1c84c21078b058ee06cbfbf13c5
-      size: 75
+      md5: f7c1bc8f050e3feea3ff041ed7a20c58
+      size: 76
     - path: models/model.pkl
       hash: md5
-      md5: 474f658370e150a696783d5157f32936
-      size: 72751
+      md5: 3bc781f86d49ba6f369f64e1ffe47cb2
+      size: 87879
+  load_data:
+    cmd: python load_data.py
+    deps:
+    - path: load_data.py
+      hash: md5
+      md5: 296112ef40cb0b1b47a95c5b189d3882
+      size: 696
+    outs:
+    - path: data/raw/Amazon_Fashion.jsonl.gz
+      hash: md5
+      md5: 7932073c8aca97d5e4c6f5446f401dc5
+      size: 95357493
