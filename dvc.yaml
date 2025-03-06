@@ -40,3 +40,20 @@ stages:
     metrics:
       - metrics.json
   
+  train_lightgbm_model:
+    cmd: python train_lightgbm_model.py
+    deps:
+      - train_lightgbm_model.py
+      - data/features/train_features.npz
+      - data/features/test_features.npz
+      - data/features/train_target.csv
+      - data/features/test_target.csv
+    params:
+      - lightgbm.n_estimators
+      - lightgbm.learning_rate
+      - lightgbm.max_depth
+      - lightgbm.random_state
+    outs:
+      - models/lightgbm_model.pkl
+    metrics:
+      - lightgbm_metrics.json

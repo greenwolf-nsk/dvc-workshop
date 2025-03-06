@@ -3,7 +3,7 @@ import yaml
 
 import pandas as pd
 import scipy.sparse as sp
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 def create_features():
     os.makedirs('data/features', exist_ok=True)
@@ -14,7 +14,13 @@ def create_features():
     train_df = pd.read_csv('data/processed/train.csv')
     test_df = pd.read_csv('data/processed/test.csv')
     
-    vectorizer = CountVectorizer(max_features=params['max_features'])
+    if params['vectorizer'] == 'count': 
+        vectorizer = CountVectorizer(max_features=params['max_features'])
+    elif params['vectorizer'] == 'tfidf':
+        vectorizer = TfidfVectorizer(max_features=params['max_features'])
+    else:
+        raise ValueError(f"Invalid vectorizer: {params['vectorizer']}")
+    
     vectorizer.fit(train_df['text'].fillna(''))
     
     train_features = vectorizer.transform(train_df['text'].fillna(''))

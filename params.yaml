@@ -1,11 +1,18 @@
 process_data:
-  sample: 10000
+  sample: 500000
   random_state: 42
   test_size: 0.2
 
 create_features:
   max_features: 20000
+  vectorizer: tfidf
 
 train_model:
   alpha: 0.01
+  random_state: 42
+
+lightgbm:
+  n_estimators: 100
+  learning_rate: 0.01
+  max_depth: 10
   random_state: 42

@@ -13,71 +13,71 @@ stages:
       size: 1135
     params:
       params.yaml:
-        process_data.sample: 10000
+        process_data.sample: 500000
         process_data.test_size: 0.2
     outs:
     - path: data/processed/test.csv
       hash: md5
-      md5: 309e187007b871f74ace0471eaf644f1
-      size: 553533
+      md5: d315b4a7511becfd649e5c977c733ae0
+      size: 27725141
     - path: data/processed/train.csv
       hash: md5
-      md5: 8ae947a28d28236ed53b238b6d971f24
-      size: 2252366
+      md5: ba50e16cf88997b9ae041d36291cdb75
+      size: 111667004
   create_features:
     cmd: python create_features.py
     deps:
     - path: create_features.py
       hash: md5
-      md5: 94dc319c18b14246317d43f8050a4126
-      size: 1639
+      md5: 1fa05acc88e3d11771c3631bed98dc30
+      size: 1413
     - path: data/processed/test.csv
       hash: md5
-      md5: 309e187007b871f74ace0471eaf644f1
-      size: 553533
+      md5: d315b4a7511becfd649e5c977c733ae0
+      size: 27725141
     - path: data/processed/train.csv
       hash: md5
-      md5: 8ae947a28d28236ed53b238b6d971f24
-      size: 2252366
+      md5: ba50e16cf88997b9ae041d36291cdb75
+      size: 111667004
     params:
       params.yaml:
         create_features.max_features: 20000
     outs:
     - path: data/features/test_features.npz
       hash: md5
-      md5: a7db967f96b5cb845d1daf5bbc0b6808
-      size: 73612
+      md5: f244a1415f9d4e62454b044615bd250e
+      size: 18603309
     - path: data/features/test_target.csv
       hash: md5
-      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
-      size: 8007
+      md5: cee17f8caa82dfacb18fedcb4aa1dbf4
+      size: 400007
     - path: data/features/train_features.npz
       hash: md5
-      md5: 42f6b9a9e6251cf5992712d8a8e73be3
-      size: 301853
+      md5: 87dddef3ff8445c4ab4850ae889159c9
+      size: 74654573
     - path: data/features/train_target.csv
       hash: md5
-      md5: d6ec47496a4c52a700c50f0fb65d8119
-      size: 32007
+      md5: 31713ee8ffc0943a98ea7cdc1f201bb4
+      size: 1600007
   train_model:
     cmd: python train_model.py
     deps:
     - path: data/features/test_features.npz
       hash: md5
-      md5: a7db967f96b5cb845d1daf5bbc0b6808
-      size: 73612
+      md5: f244a1415f9d4e62454b044615bd250e
+      size: 18603309
     - path: data/features/test_target.csv
       hash: md5
-      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
-      size: 8007
+      md5: cee17f8caa82dfacb18fedcb4aa1dbf4
+      size: 400007
     - path: data/features/train_features.npz
       hash: md5
-      md5: 42f6b9a9e6251cf5992712d8a8e73be3
-      size: 301853
+      md5: 87dddef3ff8445c4ab4850ae889159c9
+      size: 74654573
     - path: data/features/train_target.csv
       hash: md5
-      md5: d6ec47496a4c52a700c50f0fb65d8119
-      size: 32007
+      md5: 31713ee8ffc0943a98ea7cdc1f201bb4
+      size: 1600007
     - path: train_model.py
       hash: md5
       md5: 50afc7cb80a37da432e13599cecebe9c
@@ -88,9 +88,47 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 74bac1c84c21078b058ee06cbfbf13c5
-      size: 75
+      md5: f41c7844d5102f8a93de5a76dd98b834
+      size: 74
     - path: models/model.pkl
       hash: md5
-      md5: 474f658370e150a696783d5157f32936
-      size: 72751
+      md5: ddca60fdfa8517a2a93d16b9b6ee0791
+      size: 160455
+  train_lightgbm_model:
+    cmd: python train_lightgbm_model.py
+    deps:
+    - path: data/features/test_features.npz
+      hash: md5
+      md5: f244a1415f9d4e62454b044615bd250e
+      size: 18603309
+    - path: data/features/test_target.csv
+      hash: md5
+      md5: cee17f8caa82dfacb18fedcb4aa1dbf4
+      size: 400007
+    - path: data/features/train_features.npz
+      hash: md5
+      md5: 87dddef3ff8445c4ab4850ae889159c9
+      size: 74654573
+    - path: data/features/train_target.csv
+      hash: md5
+      md5: 31713ee8ffc0943a98ea7cdc1f201bb4
+      size: 1600007
+    - path: train_lightgbm_model.py
+      hash: md5
+      md5: 8010d9954c0d70c5209254065436e57d
+      size: 1478
+    params:
+      params.yaml:
+        lightgbm.learning_rate: 0.01
+        lightgbm.max_depth: 10
+        lightgbm.n_estimators: 100
+        lightgbm.random_state: 42
+    outs:
+    - path: lightgbm_metrics.json
+      hash: md5
+      md5: 912233e48497d65b3d4c46fb378f9ea7
+      size: 75
+    - path: models/lightgbm_model.pkl
+      hash: md5
+      md5: 1230faaf7860b0f4fb6eb76083bffbf4
+      size: 837766
