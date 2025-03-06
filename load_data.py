@@ -16,14 +16,13 @@ def load_data():
     save_dir = os.path.join(BASE_DIR, 'data/raw/')
     save_path = os.path.join(save_dir, 'Amazon_Fashion.jsonl.gz')
 
-    if not os.path.exists(save_path):
-        dataset = load_url(GET_URL)
+    dataset = load_url(GET_URL)
 
-        if not os.path.exists(save_dir):
-            os.makedirs(save_dir)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
 
-        with open(save_path, 'wb') as f:
-            f.write(dataset)
+    with open(save_path, 'wb') as f:
+        f.write(dataset)
 
 
 if __name__ == '__main__':
