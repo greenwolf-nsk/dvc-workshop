@@ -1,0 +1,42 @@
+stages:
+  process_data:
+    cmd: python process_data.py
+    deps:
+      - process_data.py
+      - data/raw/Amazon_Fashion.jsonl.gz
+    params:
+      - process_data.sample
+      - process_data.test_size
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  create_features:
+    cmd: python create_features.py
+    deps:
+      - create_features.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+    params:
+      - create_features.max_features
+    outs:
+      - data/features/train_features.npz
+      - data/features/test_features.npz
+      - data/features/train_target.csv
+      - data/features/test_target.csv
+
+  train_model:
+    cmd: python train_model.py
+    deps:
+      - train_model.py
+      - data/features/train_features.npz
+      - data/features/test_features.npz
+      - data/features/train_target.csv
+      - data/features/test_target.csv
+    params:
+      - train_model.alpha
+    outs:
+      - models/model.pkl
+    metrics:
+      - metrics.json
+  

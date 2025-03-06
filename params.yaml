@@ -1,0 +1,11 @@
+process_data:
+  sample: 10000
+  random_state: 42
+  test_size: 0.2
+
+create_features:
+  max_features: 20000
+
+train_model:
+  alpha: 0.01
+  random_state: 42

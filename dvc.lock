@@ -1,0 +1,96 @@
+schema: '2.0'
+stages:
+  process_data:
+    cmd: python process_data.py
+    deps:
+    - path: data/raw/Amazon_Fashion.jsonl.gz
+      hash: md5
+      md5: 49b7abcaa210692f9a03d6082302bbc9
+      size: 295578253
+    - path: process_data.py
+      hash: md5
+      md5: b09021443c4819889ac1d13f827bf1f6
+      size: 1135
+    params:
+      params.yaml:
+        process_data.sample: 10000
+        process_data.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 309e187007b871f74ace0471eaf644f1
+      size: 553533
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 8ae947a28d28236ed53b238b6d971f24
+      size: 2252366
+  create_features:
+    cmd: python create_features.py
+    deps:
+    - path: create_features.py
+      hash: md5
+      md5: 94dc319c18b14246317d43f8050a4126
+      size: 1639
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 309e187007b871f74ace0471eaf644f1
+      size: 553533
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 8ae947a28d28236ed53b238b6d971f24
+      size: 2252366
+    params:
+      params.yaml:
+        create_features.max_features: 20000
+    outs:
+    - path: data/features/test_features.npz
+      hash: md5
+      md5: a7db967f96b5cb845d1daf5bbc0b6808
+      size: 73612
+    - path: data/features/test_target.csv
+      hash: md5
+      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
+      size: 8007
+    - path: data/features/train_features.npz
+      hash: md5
+      md5: 42f6b9a9e6251cf5992712d8a8e73be3
+      size: 301853
+    - path: data/features/train_target.csv
+      hash: md5
+      md5: d6ec47496a4c52a700c50f0fb65d8119
+      size: 32007
+  train_model:
+    cmd: python train_model.py
+    deps:
+    - path: data/features/test_features.npz
+      hash: md5
+      md5: a7db967f96b5cb845d1daf5bbc0b6808
+      size: 73612
+    - path: data/features/test_target.csv
+      hash: md5
+      md5: 25d3ec8b77ac7e2e89184d03fcdf259f
+      size: 8007
+    - path: data/features/train_features.npz
+      hash: md5
+      md5: 42f6b9a9e6251cf5992712d8a8e73be3
+      size: 301853
+    - path: data/features/train_target.csv
+      hash: md5
+      md5: d6ec47496a4c52a700c50f0fb65d8119
+      size: 32007
+    - path: train_model.py
+      hash: md5
+      md5: 50afc7cb80a37da432e13599cecebe9c
+      size: 1341
+    params:
+      params.yaml:
+        train_model.alpha: 0.01
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 74bac1c84c21078b058ee06cbfbf13c5
+      size: 75
+    - path: models/model.pkl
+      hash: md5
+      md5: 474f658370e150a696783d5157f32936
+      size: 72751
